@@ -1,9 +1,17 @@
 from aws_cdk import App
 from aws_cdk import Stack
+from aws_cdk import Duration
 
 from constructs import Construct
 
+from aws_cdk.aws_sns import Topic
+
 from aws_cdk.aws_chatbot import SlackChannelConfiguration
+
+from aws_cdk.aws_events import Rule
+from aws_cdk.aws_events import Schedule
+
+from aws_cdk.aws_events_targets import SnsTopic
 
 from shared_infrastructure.cherry_lab.environments import US_WEST_2
 
@@ -23,6 +31,28 @@ class EventNotificationStack(Stack):
             slack_workspace_id='T1KMV4JJZ',
             slack_channel_id='C03QPGPLAMQ',
         )
+
+        event_notification_topic = Topic(
+            self,
+            'EventNotificationTopic',
+        )
+
+        event_channel.add_notification_topic(
+            event_notification_topic
+        )
+
+        rule = Rule(
+            self,
+            'ScheduledRule',
+            schedule=Schedule.rate(Duration.minutes(1))
+        )
+
+        rule.add_target(
+            SnsTopic(
+                event_notification_topic
+            )
+        )
+
 
 EventNotificationStack(
     app,
