@@ -1,6 +1,8 @@
 from aws_cdk import App
 from aws_cdk import Stack
 
+from constructs import Construct
+
 from aws_cdk.aws_chatbot import SlackChannelConfiguration
 
 from shared_infrastructure.cherry_lab.environments import US_WEST_2
@@ -9,9 +11,9 @@ from shared_infrastructure.cherry_lab.environments import US_WEST_2
 app = App()
 
 
-class EventNotficationStack(Stack):
+class EventNotificationStack(Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs: Any) -> None:
+    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         event_channel = SlackChannelConfiguration(
@@ -22,9 +24,9 @@ class EventNotficationStack(Stack):
             slack_channel_id='C03QPGPLAMQ',
         )
 
-EventNotficationStack(
+EventNotificationStack(
     app,
-    'EventNotficationStack',
+    'EventNotificationStack',
     env=US_WEST_2,
 )
 
