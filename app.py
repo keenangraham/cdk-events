@@ -13,7 +13,7 @@ from aws_cdk.aws_events import Schedule
 
 from aws_cdk.aws_events_targets import SnsTopic
 
-from shared_infrastructure.cherry_lab.environments import US_WEST_2
+from shared_infrastructure.igvf_dev.environment import US_WEST_2
 
 
 app = App()
@@ -39,18 +39,6 @@ class EventNotificationStack(Stack):
 
         event_channel.add_notification_topic(
             event_notification_topic
-        )
-
-        rule = Rule(
-            self,
-            'ScheduledRule',
-            schedule=Schedule.rate(Duration.minutes(1))
-        )
-
-        rule.add_target(
-            SnsTopic(
-                event_notification_topic
-            )
         )
 
 
